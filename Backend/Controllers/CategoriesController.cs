@@ -27,7 +27,29 @@ namespace Backend.Controllers
 
             var categoryDTO = mapper.Map<CategoryDTO>(categoryDomain);
             return Ok(categoryDTO);
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var categoryDomain = await _categoryRepository.GetAllCategories();
+
+            var categoryDTO = mapper.Map<List<CategoryDTO>>(categoryDomain);
+            return Ok(categoryDTO);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetCategoryById([FromRoute] Guid id)
+        {
+            var existingCategory=await _categoryRepository.GetCategoryById(id);
+            if(existingCategory == null)
+            {
+                return NotFound();
+            }
+
+            var categoryDTO=mapper.Map<CategoryDTO>(existingCategory);
+            return Ok(categoryDTO);
         }
     }
 }

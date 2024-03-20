@@ -1,5 +1,6 @@
 ﻿using Backend.Database;
 using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repositories.CategoryRepositories
 {
@@ -16,6 +17,16 @@ namespace Backend.Repositories.CategoryRepositories
             await _dBContext.Categories.AddAsync(category);
             await _dBContext.SaveChangesAsync();
             return category;
+        }
+
+        public async Task<List<Category>> GetAllCategories()
+        {
+            return await _dBContext.Categories.ToListAsync();
+        }
+
+        public async Task<Category?> GetCategoryById(Guid id)
+        {
+            return await _dBContext.Categories.FirstOrDefaultAsync(x=>x.Id == id);
         }
     }
 }
