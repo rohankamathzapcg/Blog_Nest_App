@@ -11,6 +11,7 @@ namespace Backend.Mappings
             // For Category
             CreateMap<Category,CategoryDTO>().ReverseMap();
             CreateMap<CreateCategoryRequestDTO,Category>().ReverseMap();
+            CreateMap<UpdateCategoryRequestDTO,Category>().ReverseMap();
         }
     }
 }

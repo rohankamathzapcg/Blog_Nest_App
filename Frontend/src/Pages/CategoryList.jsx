@@ -4,12 +4,18 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const CategoryList = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
+
     const [categories, setCategories] = useState([])
     const [categoryValues, setCategoryValues] = useState({
         name: "",
         urlHandle: ""
     })
     const closeRef = useRef(null)
+    const [selectedId, setSelectedId] = useState(null)
+    const [editCategoryValue, setEditCategoryValue] = useState({
+        name: "",
+        urlHandle: ""
+    })
 
     const handleCloseBtn = () => {
         if (closeRef.current) {
@@ -23,9 +29,9 @@ const CategoryList = () => {
                 setCategories(result.data)
             })
             .catch(err => console.log(err))
-    }, [])
+    })
 
-    const handleAdd = () => {
+    const HandleAddBtn = () => {
         axios.post(`${apiUrl}/api/Categories`, categoryValues)
             .then((result) => {
                 if (result.status === 200) {
@@ -45,6 +51,41 @@ const CategoryList = () => {
             })
             .catch(err => console.log(err))
     }
+
+    const HandleEditBtn = (id) => {
+        setSelectedId(id);
+        for (let i = 0; i < categories.length; i++) {
+            if (categories[i].id === id) {
+                setEditCategoryValue({
+                    name: categories[i].name,
+                    urlHandle: categories[i].urlHandle
+                })
+            }
+        }
+    }
+
+    const HandleUpdateBtn = () => {
+        axios.put(`${apiUrl}/api/Categories/${selectedId}`, editCategoryValue)
+            .then((result) => {
+                if (result.status === 200) {
+                    toast.success("Difficulty updated Successfully", {
+                        theme: "dark",
+                        autoClose: 1000,
+                    });
+                    handleCloseBtn();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    toast.error("Something went wrong!!", {
+                        theme: "dark",
+                        autoClose: 1000,
+                    });
+                }
+            })
+            .catch(err => console.log(err))
+    }
+
     return (
         <>
             <div className='mt-4 mb-4 container-fluid'>
@@ -71,7 +112,7 @@ const CategoryList = () => {
                                                 <th scope="row" className='text-center'>{category.name}</th>
                                                 <td className='text-center'>{category.urlHandle}</td>
                                                 <td className='text-center'>
-                                                    <button type="button" className="btn btn-warning" style={{ width: '80px' }} data-bs-toggle="modal" data-bs-target="#editCategoryModal">
+                                                    <button type="button" onClick={() => HandleEditBtn(category.id)} className="btn btn-warning" style={{ width: '80px' }} data-bs-toggle="modal" data-bs-target="#editCategoryModal">
                                                         Edit
                                                     </button>
                                                 </td>
@@ -104,7 +145,7 @@ const CategoryList = () => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary shadow-none" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary shadow-none" onClick={handleAdd}>Add Category</button>
+                            <button type="button" className="btn btn-primary shadow-none" onClick={HandleAddBtn}>Add Category</button>
                         </div>
                     </div>
                 </div>
@@ -121,12 +162,16 @@ const CategoryList = () => {
                         <div className="modal-body">
                             <div className="input-group mb-3">
                                 <span className="input-group-text">Category</span>
-                                <input type="text" className="form-control shadow-none" aria-label="Difficulty Level" />
+                                <input type="text" className="form-control shadow-none" aria-label="Caegory Name" value={editCategoryValue.name} onChange={(e) => setEditCategoryValue({ ...editCategoryValue, name: e.target.value })} />
+                            </div>
+                            <div className="input-group mb-3">
+                                <span className="input-group-text">Category URL</span>
+                                <input type="text" className="form-control shadow-none" aria-label="Category URL" value={editCategoryValue.urlHandle} onChange={(e) => setEditCategoryValue({ ...editCategoryValue, urlHandle: e.target.value })} />
                             </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary shadow-none" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary shadow-none">Update Category</button>
+                            <button type="button" className="btn btn-primary shadow-none" onClick={HandleUpdateBtn}>Update Category</button>
                         </div>
                     </div>
                 </div>

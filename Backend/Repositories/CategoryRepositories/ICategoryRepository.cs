@@ -7,6 +7,6 @@ namespace Backend.Repositories.CategoryRepositories
         public Task<Category> CreateNewCategory(Category category);
         public Task<List<Category>> GetAllCategories();
         public Task<Category?> GetCategoryById(Guid id);
-
+        public Task<Category?> UpdateCategory(Guid id, Category category);
     }
 }

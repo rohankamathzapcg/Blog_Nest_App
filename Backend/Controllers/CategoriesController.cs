@@ -51,5 +51,20 @@ namespace Backend.Controllers
             var categoryDTO=mapper.Map<CategoryDTO>(existingCategory);
             return Ok(categoryDTO);
         }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, UpdateCategoryRequestDTO updateCategoryRequestDTO)
+        {
+            var categoryDomain = mapper.Map<Category>(updateCategoryRequestDTO);
+            categoryDomain = await _categoryRepository.UpdateCategory(id, categoryDomain);
+            if (categoryDomain == null)
+            {
+                return NotFound();
+            }
+
+            var categoryDTO=mapper.Map<CategoryDTO> (categoryDomain);
+            return Ok(categoryDTO);
+        }
     }
 }

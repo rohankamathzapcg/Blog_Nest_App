@@ -28,5 +28,18 @@ namespace Backend.Repositories.CategoryRepositories
         {
             return await _dBContext.Categories.FirstOrDefaultAsync(x=>x.Id == id);
         }
+
+        public async Task<Category?> UpdateCategory(Guid id, Category category)
+        {
+            var existingCategory=await _dBContext.Categories.FirstOrDefaultAsync(c=>c.Id == id);
+            if (existingCategory == null)
+            {
+                return null;
+            }
+            existingCategory.Name = category.Name;
+            existingCategory.UrlHandle = category.UrlHandle;
+            await _dBContext.SaveChangesAsync();
+            return existingCategory;
+        }
     }
 }
