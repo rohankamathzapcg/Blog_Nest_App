@@ -21,7 +21,7 @@ namespace Backend.Repositories.BlogsRepositories
 
         public async Task<List<Blogs>> GetAllBlogs()
         {
-            return await _dBContext.BlogPost.ToListAsync();
+            return await _dBContext.BlogPost.Include("categories").ToListAsync();
         }
     }
 }

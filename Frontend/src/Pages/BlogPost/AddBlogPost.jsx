@@ -138,6 +138,7 @@ const AddBlogPost = () => {
                             {
                                 newblogs.featuredImageUrl === '' ? null : (
                                     <div>
+                                        <br/>
                                         <label htmlFor="BlogImage" className="form-label">Image Preview</label><br />
                                         <div className="p-2" style={{ border: "1px solid black", borderRadius: "5px" }}>
                                             <img src={newblogs.featuredImageUrl} height={100} />
@@ -156,7 +157,7 @@ const AddBlogPost = () => {
                                 Is Visible?
                             </label>
                         </div>
-                        <div className="mt-4 d-flex justify-content-between">
+                        <div className="mt-4 mb-4 d-flex justify-content-between">
                             <button type="button" className="btn btn-success" onClick={() => HandleSubmitBlog()}>Publish new blog</button>
                             <button type="button" className="btn btn-danger" onClick={() => HandleCancelBlog()}>Cancel</button>
                         </div>
