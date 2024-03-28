@@ -1,8 +1,7 @@
-﻿namespace Backend.Models
+﻿namespace Backend.Models.DTOs
 {
-    public class Blogs
+    public class CreateBlogPostRequestDTO
     {
-        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Contents { get; set; }
@@ -12,14 +11,5 @@
         public DateTime DateCreated { get; set; }
         public string Author { get; set; }
         public bool IsVisible { get; set; }
-
-        // Navigation Properties
-        public Category categories { get; set; }
-
-        public Blogs()
-        {
-            DateCreated = DateTime.UtcNow;
-        }
-
     }
 }

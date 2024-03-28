@@ -1,5 +1,6 @@
 using Backend.Database;
 using Backend.Mappings;
+using Backend.Repositories.BlogsRepositories;
 using Backend.Repositories.CategoryRepositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,9 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 //Injectng Category Repository class wih Interface
 builder.Services.AddScoped<ICategoryRepository,CategoryImplementation>();
+
+//Injectng Blogs Repository class wih Interface
+builder.Services.AddScoped<IBlogsRepository, BlogsImplementation>();
 
 /*****************************************************************/
 

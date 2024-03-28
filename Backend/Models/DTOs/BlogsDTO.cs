@@ -1,6 +1,6 @@
-﻿namespace Backend.Models
+﻿namespace Backend.Models.DTOs
 {
-    public class Blogs
+    public class BlogsDTO
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -15,11 +15,5 @@
 
         // Navigation Properties
         public Category categories { get; set; }
-
-        public Blogs()
-        {
-            DateCreated = DateTime.UtcNow;
-        }
-
     }
 }

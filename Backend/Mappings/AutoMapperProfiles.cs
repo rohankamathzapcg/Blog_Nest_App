@@ -12,6 +12,10 @@ namespace Backend.Mappings
             CreateMap<Category,CategoryDTO>().ReverseMap();
             CreateMap<CreateCategoryRequestDTO,Category>().ReverseMap();
             CreateMap<UpdateCategoryRequestDTO,Category>().ReverseMap();
+
+            // For Blogs
+            CreateMap<Blogs,BlogsDTO>().ReverseMap();
+            CreateMap<CreateBlogPostRequestDTO,Blogs>().ReverseMap();
         }
     }
 }
