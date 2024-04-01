@@ -8,5 +8,6 @@ namespace Backend.Repositories.BlogsRepositories
         public Task<List<Blogs>> GetAllBlogs();
         public Task<Blogs?> GetBlogsById(Guid id);
         public Task<Blogs> UpdateBlogs(Guid id, Blogs blogs);
+        public Task<Blogs?> DeleteBlogs(Guid id);
     }
 }

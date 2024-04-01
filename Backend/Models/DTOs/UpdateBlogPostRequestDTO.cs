@@ -1,6 +1,6 @@
 ﻿namespace Backend.Models.DTOs
 {
-    public class UpdateBlogPostRequestDTOs
+    public class UpdateBlogPostRequestDTO
     {
         public string Title { get; set; }
         public string Description { get; set; }

@@ -4,11 +4,12 @@ import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import Markdown from 'react-markdown'
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 const BlogPost = () => {
 
   const apiUrl = import.meta.env.VITE_API_URL;
-
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [markdownContent, setMarkdownContent] = useState("");
@@ -47,7 +48,28 @@ const BlogPost = () => {
       .catch(err => console.log(err))
   }, [apiUrl, updatedblog])
 
-  
+  const HandleSubmit = () => {
+    axios.put(`${apiUrl}/api/BlogPost/${id}`, updatedblog)
+      .then((result) => {
+        if (result.status === 200) {
+          toast.success("Blog updated Successfully", {
+            theme: "dark",
+            autoClose: 1000,
+          });
+          setTimeout(() => {
+            navigate("/edit-blogs")
+
+          }, 2000)
+        } else {
+          toast.error("Something went wrong!!", {
+            theme: "dark",
+            autoClose: 1000,
+          });
+        }
+      })
+      .catch(err=>console.log(err))
+  }
+
   return (
     <>
       <div className="container shadow-lg mt-4 p-2 mb-4">
@@ -114,7 +136,7 @@ const BlogPost = () => {
             </div>
             <div className="mt-3 mb-3">
               <label htmlFor="BlogDate" className="form-label">Published Date</label>
-              <input type="Date" className="form-control shadow-none" id="BlogDate" placeholder="Enter author name" value={updatedblog.dateCreated ? format(new Date(updatedblog.dateCreated), 'yyyy-MM-dd') : ''}  onChange={(e) => setUpdatedBlogs({ ...updatedblog, dateCreated: e.target.value })} />
+              <input type="Date" className="form-control shadow-none" id="BlogDate" placeholder="Enter author name" value={updatedblog.dateCreated ? format(new Date(updatedblog.dateCreated), 'yyyy-MM-dd') : ''} onChange={(e) => setUpdatedBlogs({ ...updatedblog, dateCreated: e.target.value })} />
             </div>
             <div className="form-check">
               <input className="form-check-input shadow-none" type="checkbox" checked={updatedblog.isVisible} onChange={(e) => setUpdatedBlogs({ ...updatedblog, isVisible: e.target.checked })} />
@@ -123,7 +145,8 @@ const BlogPost = () => {
               </label>
             </div>
             <div className="mt-4 mb-4 d-flex justify-content-between">
-              <button type="button" className="btn btn-success" >Update blog</button>
+              <button type="button" className="btn btn-success" onClick={HandleSubmit}>Update blog</button>
+              <button type="button" className="btn btn-danger" onClick={() => { navigate("/edit-blogs") }}>Cancel</button>
             </div>
           </div>
         </div>

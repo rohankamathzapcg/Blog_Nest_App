@@ -2,7 +2,6 @@
 using Backend.Models;
 using Backend.Models.DTOs;
 using Backend.Repositories.BlogsRepositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -24,7 +23,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> CreateBlogs([FromBody] CreateBlogPostRequestDTO createBlogPostRequestDTO)
         {
             var blogDomain = mapper.Map<Blogs>(createBlogPostRequestDTO);
-            blogDomain=await _blogsRepository.CreateBlogs(blogDomain);
+            blogDomain = await _blogsRepository.CreateBlogs(blogDomain);
 
             var blogDTO = mapper.Map<BlogsDTO>(blogDomain);
             return Ok(blogDTO);
@@ -33,9 +32,9 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllBlogs()
         {
-            var blogDomain=await _blogsRepository.GetAllBlogs();
+            var blogDomain = await _blogsRepository.GetAllBlogs();
 
-            var blogDTO=mapper.Map<List<BlogsDTO>>(blogDomain);
+            var blogDTO = mapper.Map<List<BlogsDTO>>(blogDomain);
             return Ok(blogDTO);
         }
 
@@ -43,8 +42,8 @@ namespace Backend.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetBlogPostById([FromRoute] Guid id)
         {
-            var blogDomain=await _blogsRepository.GetBlogsById(id);
-            if(blogDomain == null)
+            var blogDomain = await _blogsRepository.GetBlogsById(id);
+            if (blogDomain == null)
             {
                 return NotFound();
             }
@@ -55,6 +54,31 @@ namespace Backend.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateBlogs([FromRoute] Guid id, [FromBody] )
+        public async Task<IActionResult> UpdateBlogs([FromRoute] Guid id, [FromBody] UpdateBlogPostRequestDTO updateBlogPostRequestDTO)
+        {
+            var blogDomain = mapper.Map<Blogs>(updateBlogPostRequestDTO);
+            blogDomain = await _blogsRepository.UpdateBlogs(id, blogDomain);
+            if (blogDomain == null)
+            {
+                return NotFound();
+            }
+
+            var blogDTO = mapper.Map<BlogsDTO>(blogDomain);
+            return Ok(blogDTO);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteBlogPost([FromRoute] Guid id)
+        {
+            var deletedBlogPost = await _blogsRepository.DeleteBlogs(id);
+            if (deletedBlogPost == null)
+            {
+                return NotFound();
+            }
+
+            var blogDTO = mapper.Map<BlogsDTO>(deletedBlogPost);
+            return Ok(blogDTO);
+        }
     }
 }
