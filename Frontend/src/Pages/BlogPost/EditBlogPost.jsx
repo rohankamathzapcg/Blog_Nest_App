@@ -119,6 +119,7 @@ const EditBlogPost = () => {
                         </table>
                 }
             </div>
+
         </>
     );
 }

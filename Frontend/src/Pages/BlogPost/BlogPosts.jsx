@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import Markdown from 'react-markdown'
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import ImageSelector from "../../Components/ImageSelector";
 
 const BlogPost = () => {
 
@@ -67,7 +68,7 @@ const BlogPost = () => {
           });
         }
       })
-      .catch(err=>console.log(err))
+      .catch(err => console.log(err))
   }
 
   return (
@@ -150,6 +151,10 @@ const BlogPost = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className='images-container-modal' >
+        <ImageSelector />
       </div>
     </>
   );
