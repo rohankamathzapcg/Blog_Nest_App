@@ -90,7 +90,7 @@ const AddBlogPost = () => {
                 <div className='row justify-content-center'>
                     <div className='col-md-6'>
                         <div className='mt-4 text-center'>
-                            <h1 className="text-black">Add New Blog</h1>
+                            <h1 className="text-black">Add <span className="badge text-bg-secondary">Blog</span></h1>
                         </div>
                         <div className="mt-3 mb-3">
                             <label htmlFor="BlogTitle" className="form-label">Blog Title</label>

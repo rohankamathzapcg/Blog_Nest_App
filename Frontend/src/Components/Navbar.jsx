@@ -33,8 +33,22 @@ const Navbar = () => {
               <li className="nav-item">
                 <Link to="/admin/categorylist" className="nav-link fs-5" onClick={() => setIsVisible(true)}>Category List</Link>
               </li>
+              <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Blogs
+                </a>
+                <ul className="dropdown-menu">
+                  <li>
+                    <Link className="nav-link text-center" to="/add-blogs" onClick={() => setIsVisible(false)}>Add Blogs</Link>
+                  </li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li>
+                    <Link className="nav-link text-center" to="/edit-blogs" onClick={() => setIsVisible(false)}>Edit Blogs</Link>
+                  </li>
+                </ul>
+              </li>
+
               <li>
-                <Link className="nav-link fs-5" to="/add-blogs" onClick={() => setIsVisible(false)}>Add Blogs</Link>
               </li>
             </ul>
             {

@@ -23,5 +23,15 @@ namespace Backend.Repositories.BlogsRepositories
         {
             return await _dBContext.BlogPost.Include("categories").ToListAsync();
         }
+
+        public async Task<Blogs?> GetBlogsById(Guid id)
+        {
+            return await _dBContext.BlogPost.Include("categories").FirstOrDefaultAsync(x=>x.Id == id);
+        }
+
+        public Task<Blogs> UpdateBlogs(Guid id, Blogs blogs)
+        {
+            
+        }
     }
 }

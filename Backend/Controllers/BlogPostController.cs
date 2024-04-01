@@ -38,5 +38,23 @@ namespace Backend.Controllers
             var blogDTO=mapper.Map<List<BlogsDTO>>(blogDomain);
             return Ok(blogDTO);
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetBlogPostById([FromRoute] Guid id)
+        {
+            var blogDomain=await _blogsRepository.GetBlogsById(id);
+            if(blogDomain == null)
+            {
+                return NotFound();
+            }
+
+            var blogDTO = mapper.Map<BlogsDTO>(blogDomain);
+            return Ok(blogDTO);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateBlogs([FromRoute] Guid id, [FromBody] )
     }
 }

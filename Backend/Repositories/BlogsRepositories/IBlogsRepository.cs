@@ -6,5 +6,7 @@ namespace Backend.Repositories.BlogsRepositories
     {
         public Task<Blogs> CreateBlogs(Blogs blogs);
         public Task<List<Blogs>> GetAllBlogs();
+        public Task<Blogs?> GetBlogsById(Guid id);
+        public Task<Blogs> UpdateBlogs(Guid id, Blogs blogs);
     }
 }
