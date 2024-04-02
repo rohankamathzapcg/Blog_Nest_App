@@ -17,6 +17,9 @@ namespace Backend.Mappings
             CreateMap<Blogs, BlogsDTO>().ReverseMap();
             CreateMap<CreateBlogPostRequestDTO, Blogs>().ReverseMap();
             CreateMap<UpdateBlogPostRequestDTO, Blogs>().ReverseMap();
+
+            // For Blog Images
+            CreateMap<BlogImage, BlogImageDTO>().ReverseMap();
         }
     }
 }

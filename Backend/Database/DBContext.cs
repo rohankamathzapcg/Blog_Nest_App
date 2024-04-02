@@ -9,5 +9,6 @@ namespace Backend.Database
 
         public DbSet<Blogs> BlogPost  { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<BlogImage> BlogImages { get; set; }
     }
 }

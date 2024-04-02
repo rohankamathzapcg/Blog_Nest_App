@@ -12,7 +12,7 @@ const BlogPost = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const [imageSelectorVisible, setImageSelectorVisible] = useState(false);
   const [markdownContent, setMarkdownContent] = useState("");
   const [categories, setCategories] = useState([]);
   const [updatedblog, setUpdatedBlogs] = useState({
@@ -71,9 +71,17 @@ const BlogPost = () => {
       .catch(err => console.log(err))
   }
 
+  const openImageSelector = () => {
+    setImageSelectorVisible(true);
+  }
+
+  const closeImageSelector = () => {
+    setImageSelectorVisible(false);
+  }
+
   return (
     <>
-      <div className="container shadow-lg mt-4 p-2 mb-4">
+      <div className="container shadow-lg mt-4 p-3 mb-4">
         <ToastContainer />
         <div className='row justify-content-center'>
           <div className='col-md-6'>
@@ -121,8 +129,9 @@ const BlogPost = () => {
               </div>
             </div>
             <div className="mt-3 mb-3">
-              <label htmlFor="BlogImage" className="form-label">Featured Image URL</label>
+              <label htmlFor="BlogImage" className="form-label">Featured Image URL &nbsp;</label>
               <input type="text" className="form-control shadow-none" id="BlogImage" placeholder="Featured Image url" value={updatedblog.featuredImageUrl} onChange={(e) => setUpdatedBlogs({ ...updatedblog, featuredImageUrl: e.target.value })} />
+              <button type='button' className='form-control btn btn-outline-secondary mt-2' onClick={openImageSelector}>Browse Here</button>
               {
                 updatedblog.featuredImageUrl === '' ? null : (
                   <div>
@@ -153,9 +162,12 @@ const BlogPost = () => {
         </div>
       </div>
 
-      <div className='images-container-modal' >
-        <ImageSelector />
-      </div>
+      {imageSelectorVisible && (
+        <div className='images-container-modal' >
+          <button type='button' className="btn btn-light" style={{ position: "fixed", top: "10px", right: "10px" }} onClick={closeImageSelector}>X</button>
+          <ImageSelector onClose={closeImageSelector} />
+        </div>
+      )}
     </>
   );
 }

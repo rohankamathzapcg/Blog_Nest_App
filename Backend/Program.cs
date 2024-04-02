@@ -2,7 +2,9 @@ using Backend.Database;
 using Backend.Mappings;
 using Backend.Repositories.BlogsRepositories;
 using Backend.Repositories.CategoryRepositories;
+using Backend.Repositories.ImageRepositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +24,14 @@ builder.Services.AddScoped<ICategoryRepository,CategoryImplementation>();
 //Injectng Blogs Repository class wih Interface
 builder.Services.AddScoped<IBlogsRepository, BlogsImplementation>();
 
+//Injectng Image Repository class wih Interface
+builder.Services.AddScoped<IImageRepository, ImageImplementation>();
+
 /*****************************************************************/
 
 // Injecting Controller class
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -57,6 +63,12 @@ app.UseHttpsRedirection();
 app.UseCors("corspolicy");
 
 app.UseAuthorization();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider=new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),"Images")),
+    RequestPath="/Images"
+});
 
 app.MapControllers();
 
