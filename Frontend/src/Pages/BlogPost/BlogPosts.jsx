@@ -26,6 +26,7 @@ const BlogPost = () => {
     author: "",
     isVisible: true
   })
+  const [selectedImageUrl, setSelectedImageUrl] = useState("");
 
   const handleContentChange = (e) => {
     const content = e.target.value;
@@ -79,6 +80,10 @@ const BlogPost = () => {
     setImageSelectorVisible(false);
   }
 
+  const handleSelectImage = (imageUrl) => {
+    setSelectedImageUrl(imageUrl); // Set selected image URL
+  };
+
   return (
     <>
       <div className="container shadow-lg mt-4 p-3 mb-4">
@@ -130,7 +135,7 @@ const BlogPost = () => {
             </div>
             <div className="mt-3 mb-3">
               <label htmlFor="BlogImage" className="form-label">Featured Image URL &nbsp;</label>
-              <input type="text" className="form-control shadow-none" id="BlogImage" placeholder="Featured Image url" value={updatedblog.featuredImageUrl} onChange={(e) => setUpdatedBlogs({ ...updatedblog, featuredImageUrl: e.target.value })} />
+              <input type="text" className="form-control shadow-none" id="BlogImage" placeholder="Featured Image url" value={selectedImageUrl==='' ? updatedblog.featuredImageUrl : selectedImageUrl} onChange={(e) => setUpdatedBlogs({ ...updatedblog, featuredImageUrl: e.target.value })} />
               <button type='button' className='form-control btn btn-outline-secondary mt-2' onClick={openImageSelector}>Browse Here</button>
               {
                 updatedblog.featuredImageUrl === '' ? null : (
@@ -165,7 +170,7 @@ const BlogPost = () => {
       {imageSelectorVisible && (
         <div className='images-container-modal' >
           <button type='button' className="btn btn-light" style={{ position: "fixed", top: "10px", right: "10px" }} onClick={closeImageSelector}>X</button>
-          <ImageSelector onClose={closeImageSelector} />
+          <ImageSelector onClose={closeImageSelector} onSelectImage={handleSelectImage} />
         </div>
       )}
     </>

@@ -19,6 +19,14 @@ namespace Backend.Controllers
             _imageRepository = imageRepository;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllImages()
+        {
+            var imageDomain=await _imageRepository.GetAllImages();
+            var imageDTO = mapper.Map<List<BlogImageDTO>>(imageDomain);
+
+            return Ok(imageDTO);
+        }
 
         [HttpPost]
         public async Task<IActionResult> UploadImage([FromForm] IFormFile file,[FromForm] string filename,[FromForm] string title)

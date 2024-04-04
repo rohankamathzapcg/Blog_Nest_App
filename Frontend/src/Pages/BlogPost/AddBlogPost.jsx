@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import Markdown from 'react-markdown'
+import ImageSelector from "../../Components/ImageSelector";
 
 const AddBlogPost = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -19,6 +20,8 @@ const AddBlogPost = () => {
         isVisible: true
     });
     const [markdownContent, setMarkdownContent] = useState("");
+    const [imageSelectorVisible, setImageSelectorVisible] = useState(false);
+    const [selectedImageUrl, setSelectedImageUrl] = useState("");
 
     useEffect(() => {
         axios.get(`${apiUrl}/api/Categories`)
@@ -83,9 +86,21 @@ const AddBlogPost = () => {
         });
     }
 
+    const openImageSelector = () => {
+        setImageSelectorVisible(true);
+      }
+    
+      const closeImageSelector = () => {
+        setImageSelectorVisible(false);
+      }
+    
+      const handleSelectImage = (imageUrl) => {
+        setSelectedImageUrl(imageUrl); 
+      };
+
     return (
         <>
-            <div className="container shadow-lg mt-4 p-2 mb-4">
+            <div className="container shadow-lg mt-4 p-3 mb-4">
                 <ToastContainer />
                 <div className='row justify-content-center'>
                     <div className='col-md-6'>
@@ -134,11 +149,12 @@ const AddBlogPost = () => {
                         </div>
                         <div className="mt-3 mb-3">
                             <label htmlFor="BlogImage" className="form-label">Featured Image URL</label>
-                            <input type="text" className="form-control shadow-none" id="BlogImage" placeholder="Featured Image url" value={newblogs.featuredImageUrl} onChange={(e) => setNewBlogs({ ...newblogs, featuredImageUrl: e.target.value })} />
+                            <input type="text" className="form-control shadow-none" id="BlogImage" placeholder="Featured Image url" value={selectedImageUrl==='' ? newblogs.featuredImageUrl : selectedImageUrl} onChange={(e) => setNewBlogs({ ...newblogs, featuredImageUrl: e.target.value })} />
+                            <button type='button' className='form-control btn btn-outline-secondary mt-2' onClick={openImageSelector}>Browse Here</button>
                             {
                                 newblogs.featuredImageUrl === '' ? null : (
                                     <div>
-                                        <br/>
+                                        <br />
                                         <label htmlFor="BlogImage" className="form-label">Image Preview</label><br />
                                         <div className="p-2" style={{ border: "1px solid black", borderRadius: "5px" }}>
                                             <img src={newblogs.featuredImageUrl} height={100} />
@@ -164,6 +180,12 @@ const AddBlogPost = () => {
                     </div>
                 </div>
             </div>
+            {imageSelectorVisible && (
+                <div className='images-container-modal' >
+                    <button type='button' className="btn btn-light" style={{ position: "fixed", top: "10px", right: "10px" }} onClick={closeImageSelector}>X</button>
+                    <ImageSelector onClose={closeImageSelector} onSelectImage={handleSelectImage} />
+                </div>
+            )}
         </>
     );
 }

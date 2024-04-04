@@ -1,6 +1,7 @@
 ﻿
 using Backend.Database;
 using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repositories.ImageRepositories
 {
@@ -15,6 +16,11 @@ namespace Backend.Repositories.ImageRepositories
             this.webHostEnvironment = webHostEnvironment;
             this.httpContextAccessor = httpContextAccessor;
             this.dBContext = dBContext;
+        }
+
+        public async Task<List<BlogImage>> GetAllImages()
+        {
+            return await dBContext.BlogImages.ToListAsync();
         }
 
         public async Task<BlogImage> Upload(IFormFile file, BlogImage blogImage)
