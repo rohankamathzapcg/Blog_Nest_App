@@ -9,6 +9,7 @@ import AddBlogPost from "./Pages/BlogPost/AddBlogPost";
 import EditBlogPost from "./Pages/BlogPost/EditBlogPost";
 import BlogPost from "./Pages/BlogPost/BlogPosts";
 import HomePage from "./Pages/HomePage";
+import BlogDetail from "./Pages/BlogPost/BlogDetail";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/add-blogs" element={<AddBlogPost />} />
           <Route path="/edit-blogs" element={<EditBlogPost />} />
           <Route path="/edit-blogs/:id" element={<BlogPost />} />
+          <Route path="/blog-details/:urlHandle" element={<BlogDetail />} />
 
         </Routes>
 

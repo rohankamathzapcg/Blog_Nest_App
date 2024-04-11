@@ -149,7 +149,7 @@ const AddBlogPost = () => {
                         </div>
                         <div className="mt-3 mb-3">
                             <label htmlFor="BlogImage" className="form-label">Featured Image URL</label>
-                            <input type="text" className="form-control shadow-none" id="BlogImage" placeholder="Featured Image url" value={selectedImageUrl==='' ? newblogs.featuredImageUrl : selectedImageUrl} onChange={(e) => setNewBlogs({ ...newblogs, featuredImageUrl: e.target.value })} />
+                            <input type="text" className="form-control shadow-none" id="BlogImage" placeholder="Featured Image url" value={selectedImageUrl==='' ? newblogs.featuredImageUrl : selectedImageUrl} onChange={(e) => selectedImageUrl==="" ? setNewBlogs({ ...newblogs, featuredImageUrl: e.target.value }) : setNewBlogs({ ...newblogs, featuredImageUrl: selectedImageUrl })} />
                             <button type='button' className='form-control btn btn-outline-secondary mt-2' onClick={openImageSelector}>Browse Here</button>
                             {
                                 newblogs.featuredImageUrl === '' ? null : (

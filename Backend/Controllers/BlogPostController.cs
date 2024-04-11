@@ -39,7 +39,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id:guid}")]
         public async Task<IActionResult> GetBlogPostById([FromRoute] Guid id)
         {
             var blogDomain = await _blogsRepository.GetBlogsById(id);
@@ -80,5 +80,19 @@ namespace Backend.Controllers
             var blogDTO = mapper.Map<BlogsDTO>(deletedBlogPost);
             return Ok(blogDTO);
         }
+
+        [HttpGet]
+        [Route("{urlHandle}")]
+        public async Task<IActionResult> GetBlogPostByURL([FromRoute] string urlHandle)
+        {
+            var blogDomain= await _blogsRepository.GetBlogPostByURL(urlHandle);
+            if(blogDomain == null)
+            {
+                return NotFound();
+            }
+
+            var blogDTO = mapper.Map<BlogsDTO>(blogDomain);
+            return Ok(blogDTO);
+        } 
     }
 }

@@ -31,7 +31,7 @@ const HomePage = () => {
                                                 <h3 className="card-title">{blog.title}</h3>
                                                 <p className="card-text">{blog.description}</p>
                                                 <span className="d-flex align-items-end" style={{ flex: "1" }}>
-                                                    <Link className="btn btn-dark" to={blog.urlHandle}>Read More</Link>
+                                                    <Link className="btn btn-dark" to={`/blog-details/${blog.urlHandle}`}>Read More</Link>
                                                 </span>
                                             </div>
                                         </div>
