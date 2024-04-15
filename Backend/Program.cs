@@ -3,8 +3,11 @@ using Backend.Mappings;
 using Backend.Repositories.BlogsRepositories;
 using Backend.Repositories.CategoryRepositories;
 using Backend.Repositories.ImageRepositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,17 +18,56 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiPostgresDatabase")));
 
+// Injecting AuthDbCntext class
+builder.Services.AddDbContext<AuthDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiPostgresDatabase")));
+
 // Injecting Automapper class
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
-//Injectng Category Repository class wih Interface
-builder.Services.AddScoped<ICategoryRepository,CategoryImplementation>();
+// Injectng Category Repository class wih Interface
+builder.Services.AddScoped<ICategoryRepository, CategoryImplementation>();
 
-//Injectng Blogs Repository class wih Interface
+// Injectng Blogs Repository class wih Interface
 builder.Services.AddScoped<IBlogsRepository, BlogsImplementation>();
 
-//Injectng Image Repository class wih Interface
+// Injectng Image Repository class wih Interface
 builder.Services.AddScoped<IImageRepository, ImageImplementation>();
+
+// Injecting Tokens
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("codeBlog")
+    .AddEntityFrameworkStores<AuthDbContext>()
+    .AddDefaultTokenProviders();
+
+// Injecting various password validations
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+});
+
+// Injecting JWT Tokens
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            AuthenticationType = "Jwt",
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
 /*****************************************************************/
 
@@ -62,12 +104,14 @@ app.UseHttpsRedirection();
 // Using CORS Policy
 app.UseCors("corspolicy");
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider=new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),"Images")),
-    RequestPath="/Images"
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
+    RequestPath = "/Images"
 });
 
 app.MapControllers();
