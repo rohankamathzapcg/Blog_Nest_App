@@ -14,26 +14,24 @@ import BlogDetail from "./Pages/BlogPost/BlogDetail";
 const App = () => {
   return (
     <>
-      <BrowserRouter>
+        <BrowserRouter>
 
-        <Navbar />
+          <Navbar />
 
-        <Routes>
+          <Routes>
 
-          <Route path='/' element={<HomePage />} />
-          <Route path="/admin/categorylist" element={<CategoryList />} />
-          <Route path="/add-blogs" element={<AddBlogPost />} />
-          <Route path="/edit-blogs" element={<EditBlogPost />} />
-          <Route path="/edit-blogs/:id" element={<BlogPost />} />
-          <Route path="/blog-details/:urlHandle" element={<BlogDetail />} />
+            <Route path='/' element={<HomePage />} />
+            <Route path="/admin/categorylist" element={<CategoryList />} />
+            <Route path="/add-blogs" element={<AddBlogPost />} />
+            <Route path="/edit-blogs" element={<EditBlogPost />} />
+            <Route path="/edit-blogs/:id" element={<BlogPost />} />
+            <Route path="/blog-details/:urlHandle" element={<BlogDetail />} />
 
-        </Routes>
+          </Routes>
 
-        <Footer />
+          <Footer />
 
-      </BrowserRouter>
-
-
+        </BrowserRouter>
     </>
   )
 }

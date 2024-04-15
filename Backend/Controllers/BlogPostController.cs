@@ -2,6 +2,7 @@
 using Backend.Models;
 using Backend.Models.DTOs;
 using Backend.Repositories.BlogsRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -20,6 +21,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles ="Writer")]
         public async Task<IActionResult> CreateBlogs([FromBody] CreateBlogPostRequestDTO createBlogPostRequestDTO)
         {
             var blogDomain = mapper.Map<Blogs>(createBlogPostRequestDTO);
@@ -54,6 +56,7 @@ namespace Backend.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> UpdateBlogs([FromRoute] Guid id, [FromBody] UpdateBlogPostRequestDTO updateBlogPostRequestDTO)
         {
             var blogDomain = mapper.Map<Blogs>(updateBlogPostRequestDTO);
@@ -69,6 +72,7 @@ namespace Backend.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> DeleteBlogPost([FromRoute] Guid id)
         {
             var deletedBlogPost = await _blogsRepository.DeleteBlogs(id);

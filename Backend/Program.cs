@@ -3,6 +3,7 @@ using Backend.Mappings;
 using Backend.Repositories.BlogsRepositories;
 using Backend.Repositories.CategoryRepositories;
 using Backend.Repositories.ImageRepositories;
+using Backend.Repositories.TokenReposiories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,9 @@ builder.Services.AddScoped<IBlogsRepository, BlogsImplementation>();
 
 // Injectng Image Repository class wih Interface
 builder.Services.AddScoped<IImageRepository, ImageImplementation>();
+
+// Injectng Token Repository class wih Interface
+builder.Services.AddScoped<ITokenRepository, TokenImplementation>();
 
 // Injecting Tokens
 builder.Services.AddIdentityCore<IdentityUser>()

@@ -21,6 +21,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequestDTO createCategoryRequestDTO)
         {
             var categoryDomain = mapper.Map<Category>(createCategoryRequestDTO);
@@ -55,6 +56,7 @@ namespace Backend.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles ="Writer")]
         public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, UpdateCategoryRequestDTO updateCategoryRequestDTO)
         {
             var categoryDomain = mapper.Map<Category>(updateCategoryRequestDTO);
