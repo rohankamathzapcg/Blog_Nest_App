@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Login from "./Login";
-import { ToastContainer } from 'react-toastify';
 
 const Navbar = () => {
   const [isSmallScreen, setIsSmallScreen] = useState();
@@ -18,15 +17,14 @@ const Navbar = () => {
     }
   }, []);
 
-  const [loggedInUser, setLoggedInUser] = useState(null); // State to store the logged-in user's email
-
-  const handleLogin = (username) => {
-    setLoggedInUser(username); // Set the logged-in user's email in state
-  };
+  const HandleLogout=()=>{
+    sessionStorage.setItem('user','')
+    window.location.reload();
+  }
 
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <nav className="navbar navbar-expand-lg p-4" style={{ backgroundColor: "#e3f2fd" }}>
         <div className="container-fluid">
           <Link className="navbar-brand fs-2" to="/">Code<span style={{ color: "red" }}>Blog.</span></Link>
@@ -67,17 +65,22 @@ const Navbar = () => {
                 </div>
               ) : null
             } */}
-            <Login onLogin={handleLogin} />
+            <Login />
 
             {
-              loggedInUser === null ? (
+              !sessionStorage.getItem('user') ? (
                 <div className={isSmallScreen ? "mt-3" : ""}>
                   <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Login/Register</button>
                 </div>
-              ) : <p>{loggedInUser}</p>
+              ) :
+                <>
+                  <div className={isSmallScreen ? "mt-3 d-flex align-items-center" : "d-flex align-items-center"}>
+                    <p className="me-2">{sessionStorage.getItem('user')}</p>
+                    <button type="button" className="btn btn-danger" onClick={()=>HandleLogout()}>Logout</button>
+                  </div>
+
+                </>
             }
-
-
           </div>
         </div>
       </nav>

@@ -2,9 +2,8 @@ import { useState } from "react";
 import Register from "./Register";
 import axios from "axios";
 import { toast } from 'react-toastify';
-import PropTypes from 'prop-types';
 
-const Login = ({ onLogin }) => {
+const Login = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const [userData, setUserData] = useState({
         email: "",
@@ -14,12 +13,16 @@ const Login = ({ onLogin }) => {
         const username=userData.email;
         axios.post(`${apiUrl}/api/Auth/login`,userData)
             .then((result) => {
-                onLogin(username);
                 if (result.status === 200) {
+                    sessionStorage.setItem("user", username);
                     toast.success("Logged In Successfully", {
                         theme: "dark",
                         autoClose: 1000,
                     });
+                    setTimeout(()=>{
+                        window.location.reload();
+
+                    },2000)
                 }
                 else {
                     toast.error("Enter Valid Data", {
@@ -60,7 +63,7 @@ const Login = ({ onLogin }) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={(e) => { handleLogin(e) }}>Login</button>
+                            <button type="button" className="btn btn-primary" onClick={() => { handleLogin() }}>Login</button>
                         </div>
                     </div>
                 </div>
@@ -69,9 +72,5 @@ const Login = ({ onLogin }) => {
         </>
     );
 }
-
-Login.propTypes = {
-    onLogin: PropTypes.func.isRequired
-  };
 
 export default Login;
